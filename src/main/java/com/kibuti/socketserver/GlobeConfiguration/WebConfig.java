@@ -22,11 +22,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("*") // Allow all origins for testing; restrict in production
-                //.allowedOrigins("https://kfz.pos-service.store")
+                .allowedOriginPatterns("*") // Use patterns instead of origins
                 .allowedMethods("*")
                 .allowedHeaders("*")
-                .allowCredentials(false); // Set to true if using cookies or HTTP authentication
+                .allowCredentials(true);
     }
 }
 

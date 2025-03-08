@@ -46,17 +46,60 @@ public class SecurityConfiguration {
         return configuration.getAuthenticationManager();
     }
 
+//    @Bean
+//    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests((authorize) -> authorize
+//                        .requestMatchers(HttpMethod.POST, "/api/v2/auth/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/v2/auth/**").permitAll()
+//
+//                        .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+//
+//                        .requestMatchers("/jobrunr").permitAll()
+//
+//                        .anyRequest().authenticated())
+//                .httpBasic(Customizer.withDefaults())
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//
+//        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//
+//        return httpSecurity.build();
+//    }
+
+//    @Bean
+//    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests((authorize) -> authorize
+//                        .requestMatchers(HttpMethod.POST, "/api/v2/auth/**").permitAll()
+//                        .requestMatchers(HttpMethod.GET, "/api/v2/auth/**").permitAll()
+//                        // Add these lines to allow WebSocket connections
+//                        .requestMatchers("/ws/**").permitAll()
+//                        .requestMatchers("/ws").permitAll()
+//                        .requestMatchers("/topic/**").permitAll()
+//                        .requestMatchers("/app/**").permitAll()
+//
+//                        .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
+//                        .requestMatchers("/jobrunr").permitAll()
+//                        .anyRequest().authenticated())
+//                .httpBasic(Customizer.withDefaults())
+//                .sessionManagement(session -> session
+//                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//
+//        httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//
+//        return httpSecurity.build();
+//    }
+
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/v2/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v2/auth/**").permitAll()
-
+                        .requestMatchers("/ws/**").permitAll() // WebSocket endpoints
                         .requestMatchers(HttpMethod.GET, "/images/**").permitAll()
-
                         .requestMatchers("/jobrunr").permitAll()
-
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session
@@ -66,6 +109,5 @@ public class SecurityConfiguration {
 
         return httpSecurity.build();
     }
-
 
 }

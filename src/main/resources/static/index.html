@@ -73,39 +73,63 @@
         $("#greetings").html("");
     }
 
+    // function connect() {
+    //     // Create SockJS connection
+    //     const socket = new SockJS('/gs-guide-websocket');
+    //
+    //     // Log when SockJS connects
+    //     socket.onopen = function() {
+    //         console.log('SockJS connection opened');
+    //         document.getElementById('connection-status').textContent = 'SockJS Connected';
+    //     };
+    //
+    //     // Create STOMP client over SockJS
+    //     stompClient = Stomp.over(socket);
+    //
+    //     // Enable debug logging
+    //     stompClient.debug = function(str) {
+    //         console.log('STOMP: ' + str);
+    //     };
+    //
+    //     // Connect to the STOMP broker
+    //     stompClient.connect({}, function(frame) {
+    //         setConnected(true);
+    //         console.log('Connected: ' + frame);
+    //         document.getElementById('connection-status').textContent = 'STOMP Connected';
+    //
+    //         // Subscribe to the greeting topic
+    //         stompClient.subscribe('/topic/greetings', function(greeting) {
+    //             console.log('Received greeting:', greeting);
+    //             showGreeting(JSON.parse(greeting.body).content);
+    //         });
+    //     }, function(error) {
+    //         // Error callback
+    //         console.error('STOMP connection error:', error);
+    //         document.getElementById('connection-status').textContent = 'STOMP Connection Error';
+    //     });
+    // }
+
+
     function connect() {
-        // Create SockJS connection
         const socket = new SockJS('/gs-guide-websocket');
-
-        // Log when SockJS connects
-        socket.onopen = function() {
-            console.log('SockJS connection opened');
-            document.getElementById('connection-status').textContent = 'SockJS Connected';
-        };
-
-        // Create STOMP client over SockJS
         stompClient = Stomp.over(socket);
 
-        // Enable debug logging
-        stompClient.debug = function(str) {
-            console.log('STOMP: ' + str);
-        };
+        // Get token from localStorage or wherever you store it
+        const token = localStorage.getItem('token');
 
-        // Connect to the STOMP broker
-        stompClient.connect({}, function(frame) {
+        const headers = {};
+        if (token) {
+            headers['Authorization'] = 'Bearer ' + token;
+        }
+
+        stompClient.connect(headers, function(frame) {
             setConnected(true);
             console.log('Connected: ' + frame);
-            document.getElementById('connection-status').textContent = 'STOMP Connected';
-
-            // Subscribe to the greeting topic
             stompClient.subscribe('/topic/greetings', function(greeting) {
-                console.log('Received greeting:', greeting);
                 showGreeting(JSON.parse(greeting.body).content);
             });
         }, function(error) {
-            // Error callback
             console.error('STOMP connection error:', error);
-            document.getElementById('connection-status').textContent = 'STOMP Connection Error';
         });
     }
 
